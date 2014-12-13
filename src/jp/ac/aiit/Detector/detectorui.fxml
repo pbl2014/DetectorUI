@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.GridPane?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jp.ac.aiit.Detector.Controller">
+<GridPane alignment="center" hgap="10" prefHeight="403.0" prefWidth="599.0" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jp.ac.aiit.Detector.Controller">
    <columnConstraints>
       <ColumnConstraints />
    </columnConstraints>
@@ -13,9 +13,10 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <AnchorPane prefHeight="405.0" prefWidth="490.0">
+      <AnchorPane prefHeight="417.0" prefWidth="600.0">
          <children>
-            <Button id="dirbtn" fx:id="dirbtn" layoutX="37.0" layoutY="35.0" mnemonicParsing="false" onAction="#dirButtonAction" text="directory" />
+            <Button id="dirbtn" fx:id="dirbtn" layoutX="39.0" layoutY="26.0" mnemonicParsing="false" onAction="#dirButtonAction" text="directory" />
+            <Label fx:id="dirlabel" layoutX="132.0" layoutY="31.0" prefHeight="16.0" prefWidth="420.0" />
          </children>
       </AnchorPane>
    </children>
