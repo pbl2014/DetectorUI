@@ -1,77 +1,76 @@
 package jp.ac.aiit.detector;
 
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import org.apache.commons.io.FileUtils;
-import java.net.URL;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-
-import javafx.animation.Animation;
-import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
-import javafx.animation.SequentialTransition;
-
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.fxml.Initializable;
-import javafx.util.Duration;
+import java.util.*;
 import javafx.event.ActionEvent;
-import static java.lang.Thread.sleep;
+
 import static org.apache.commons.io.FileUtils.getUserDirectory;
 
 public class Controller
 {
-    //@FXML private ImageView imageView;
-    @FXML private Label d_path;
-    @FXML private AnchorPane picpanel;
-    private List<String> imagesList;
 
+    public static final ObservableList images= FXCollections.observableArrayList();
+    @FXML private Label d_path;
+    @FXML private AnchorPane imaepane;
+    @FXML private Image image;
+
+    /**
+     * Chooser The Directoryボタンのaction
+     * listView :imageviewを表示するビュー
+     * filelist :getImageFileList()メソッドから選択した全て画像フィアルのリスト
+     * 画像の流れは以下の通り：
+     * filelistーー＞ imagePath ーー＞imageFileーー＞image-->imageview-->images-->listViewーー＞imaepane
+     *
+     */
     public  void opendirectory(ActionEvent event)
     {
+        final ListView<String> listView =new ListView<String>();
         String[] filelist = getImageFileList();
-        for(String imagePath : filelist)
-        {
-            System.out.println("length is:"+filelist.length);
-            File imageFile= new File(imagePath);
-            Label lb= new Label();
-            lb.setText("xxx" + imageFile.getName());
-            Image image = new Image(imageFile.toURI().toString());
-            ImageView imageView =new ImageView();
-            imageView.setFitHeight(100);
-            imageView.setFitWidth(100);
-            imageView.setPreserveRatio(true);
-            imageView.setSmooth(false);
-            imageView.setCache(true);
-            imageView.setImage(image);
-            picpanel.getChildren().add(imageView);
-            lb.setAlignment(Pos.TOP_LEFT);
-            d_path.setText("path:"+getFolderPath());
-        }
+        for (String imagePath : filelist) {
+                System.out.println("length is: " + filelist.length);
+                File imageFile = new File(imagePath);
+                System.out.println("pic_name is: " +imageFile.getPath());
+                image = new Image(imageFile.toURI().toString());
+                ImageView imageView = new ImageView();
+                imageView.setFitHeight(50);
+                imageView.setFitWidth(50);
+                imageView.setPreserveRatio(true);
+                imageView.setSmooth(false);
+                imageView.setCache(true);
+                imageView.setImage(image);
+                images.addAll(imageView);
+            }
+        listView.setItems(images);
+        listView.setPrefWidth(1000);
+        listView.setFixedCellSize(100);
+        //listView.setOrientation(Orientation.HORIZONTAL);
+        imaepane.getChildren().add(listView);
+
+
     }
 
+    /**
+     *
+     * @return 画像path リスト
+     */
     public String[] getImageFileList()
     {
+
         ArrayList<String> fileList = new ArrayList<String>();
         String[] fileExList=new String[]{"jpg","gif","png","JPG","GIF","PNG","jpeg","JPEG"};
         Iterator<File> files = FileUtils.iterateFiles(getFolderPath(), fileExList, true);
@@ -80,24 +79,24 @@ public class Controller
             fileList.add(files.next().getAbsolutePath());
 
         }
-        System.out.println("大きさは"+fileList.size());
         return fileList.toArray(new String[fileList.size()]);
 
     }
 
-
+    /**
+     *
+     * open Directory
+     */
     private File getFolderPath()
     {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select Folder Containing Images ");
+        File file = directoryChooser.showDialog(Main.stage);
         directoryChooser.setInitialDirectory(getUserDirectory());
-        File file = directoryChooser.showDialog(null);
         if(file != null)
         {
-
-            System.out.println(file.getAbsoluteFile());
+            d_path.setText("path:" + file.getAbsolutePath());
             return file.getAbsoluteFile();
-
         }
         else
         {
@@ -108,9 +107,72 @@ public class Controller
     }
 
 
+    /**
+     *
+     * @param event
+     */
+    public void indetector(ActionEvent event)
+    {
+        //テスト用画像リスト
+        System.out.println("重複処理中です。");
+        //画像リスト
+        List groupPics = new ArrayList();
+        //重複画像グループ１、中身は二つの画像フィアル
+        List<String> group1 = new ArrayList<String>();
+        group1.add("/Users/hakuei/Desktop/pictures/p027_01.jpg");
+        group1.add("/Users/hakuei/Desktop/pictures/p027_02.jpg");
+        //重複画像グループ２、中身は二つの画像フィアル
+        List<String> group2 = new ArrayList<String>();
+        group2.add("/Users/hakuei/Desktop/pictures/p039_01.jpg");
+        group2.add("/Users/hakuei/Desktop/pictures/p039_02.jpg");
+        groupPics.add(group1);
+        groupPics.add(group2);
 
+        //タブ定義　重複画像のグループ数と同じ
+        List<Tab> groupTabs = new ArrayList<Tab>();
+        //タブに表示画像
+        Image image1;
 
-
-
-
+        //重複画像のグループ数とグループなかの画像フィアル
+        for (int i = 1; i < groupPics.size()+1; i++) {
+            Tab tab = new Tab();
+            tab.setText("グループ" + i);
+            //タブの中にAnchorPane を貼り付けます
+            AnchorPane pane =new AnchorPane();
+            tab.setContent(pane);
+            //重複画像入れる
+            ObservableList images1= FXCollections.observableArrayList();
+            //画像ファイルの変更
+            List<String> pics = (List)groupPics.get(i-1);
+            //画像表示
+            ListView<String> listView1 = new ListView<String>();
+            for (String imagePath :pics) {
+                File imageFile = new File(imagePath);
+                image1 = new Image(imageFile.toURI().toString());
+                ImageView imageView = new ImageView();
+                imageView.setFitHeight(150);
+                imageView.setFitWidth(150);
+                imageView.setPreserveRatio(true);
+                imageView.setSmooth(false);
+                imageView.setCache(true);
+                imageView.setImage(image1);
+                images1.addAll(imageView);
+                listView1.setItems(images1);
+                listView1.setPrefWidth(1000);
+                listView1.setFixedCellSize(100);
+            }
+            pane.getChildren().add(listView1);
+            groupTabs.add(tab);
+        }
+        //グループ化した画像ファイルのタブを保存する
+        TabPane tabPane = new TabPane();
+        tabPane.getTabs().addAll(groupTabs);
+        //TabPane を表示する
+        final Pane pane= new Pane();
+        pane.getChildren().add(tabPane);
+        Scene scene = new Scene(pane, 1000, 800);
+        Main.stage.setScene(scene);
+        Main.stage.setTitle("Detector");
+        Main.stage.show();
+    }
 }

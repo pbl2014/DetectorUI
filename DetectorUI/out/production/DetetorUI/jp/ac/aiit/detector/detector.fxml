@@ -6,38 +6,30 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jp.ac.aiit.detector.Controller">
+<BorderPane prefHeight="900.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jp.ac.aiit.detector.Controller">
    <top>
-      <AnchorPane prefHeight="120.0" prefWidth="1000.0" style="-fx-background-color: #ccccff;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="92.0" prefWidth="1000.0" style="-fx-background-color: #ccccff;" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" prefHeight="40.0" prefWidth="1000.0" style="-fx-background-color: #cccccc;" text="Detector">
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="1000.0" style="-fx-background-color: #cccccc;" text="Detector">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button layoutX="671.0" layoutY="55.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Delete" />
-            <Button layoutX="411.0" layoutY="55.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="重複処理" />
-            <Button fx:id="d_chooser" layoutX="170.0" layoutY="56.0" mnemonicParsing="false" onAction="#opendirectory" prefHeight="50.0" prefWidth="200.0" text="Chooser The Directory" />
+            <Button layoutX="667.0" layoutY="35.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Delete" />
+            <Button layoutX="411.0" layoutY="35.0" mnemonicParsing="false" onAction="#indetector" prefHeight="50.0" prefWidth="200.0" text="重複処理" />
+            <Button fx:id="d_chooser" layoutX="170.0" layoutY="34.0" mnemonicParsing="false" onAction="#opendirectory" prefHeight="50.0" prefWidth="200.0" text="Chooser The Directory" />
          </children>
       </AnchorPane>
    </top>
    <bottom>
-      <AnchorPane prefHeight="82.0" prefWidth="1000.0" style="-fx-background-color: #ccccff;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="50.0" prefWidth="1000.0" style="-fx-background-color: #ccccff;" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="d_path" layoutY="20.0" prefHeight="40.0" prefWidth="1000.0" text="path:">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" layoutY="59.0" prefHeight="40.0" prefWidth="1000.0" style="-fx-background-color: #cccccc;" text="AIIT2014©小山裕司PBL" />
+            <Label fx:id="d_path" layoutY="-9.0" prefHeight="30.0" prefWidth="1000.0" style="-fx-background-color: #ccccff;" text="path:" />
+            <Label alignment="CENTER" layoutY="21.0" prefHeight="30.0" prefWidth="1000.0" style="-fx-background-color: #cccccc;" text="AIIT2015©小山裕司PBL" />
          </children>
       </AnchorPane>
    </bottom>
    <center>
-      <AnchorPane fx:id="picpanel" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-
-
-
-      </AnchorPane>
+      <AnchorPane fx:id="imaepane" prefHeight="602.0" prefWidth="1000.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
