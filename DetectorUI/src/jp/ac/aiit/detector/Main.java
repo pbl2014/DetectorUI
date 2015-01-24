@@ -12,6 +12,8 @@ import javax.swing.text.html.ImageView;
 
 public class Main extends Application {
 
+    public static Stage stage;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
 
@@ -20,6 +22,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 1000, 800));
         primaryStage.show();
         System.out.println(System.getProperty("javafx.version"));
+        stage=primaryStage;
 
 
     }
