@@ -1,5 +1,10 @@
 package jp.ac.aiit.detector;
 
+import jp.ac.aiit.Detector.DetectorResult;
+import jp.ac.aiit.Detector.matcher.HistogramMatcher;
+import jp.ac.aiit.Detector.util.Tool;
+import jp.ac.aiit.detector.*;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,6 +14,9 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import javax.swing.text.html.ImageView;
+import java.io.File;
+
+import static org.bytedeco.javacpp.opencv_highgui.CV_LOAD_IMAGE_COLOR;
 
 public class Main extends Application {
 
@@ -23,7 +31,6 @@ public class Main extends Application {
         primaryStage.show();
         System.out.println(System.getProperty("javafx.version"));
         stage=primaryStage;
-
 
     }
 

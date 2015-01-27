@@ -14,17 +14,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
+import jp.ac.aiit.Detector.DetectorResult;
+import jp.ac.aiit.Detector.matcher.HistogramMatcher;
 import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.util.*;
 import javafx.event.ActionEvent;
 
 import static org.apache.commons.io.FileUtils.getUserDirectory;
+import static org.bytedeco.javacpp.opencv_highgui.CV_LOAD_IMAGE_COLOR;
+
 
 public class Controller
 {
 
     public static final ObservableList images= FXCollections.observableArrayList();
+
+    HistogramMatcher hm;
     @FXML private Label d_path;
     @FXML private AnchorPane imaepane;
     @FXML private Image image;
@@ -39,6 +45,8 @@ public class Controller
      */
     public  void opendirectory(ActionEvent event)
     {
+        hm = new HistogramMatcher();
+
         final ListView<String> listView =new ListView<String>();
         String[] filelist = getImageFileList();
         for (String imagePath : filelist) {
@@ -54,6 +62,8 @@ public class Controller
                 imageView.setCache(true);
                 imageView.setImage(image);
                 images.addAll(imageView);
+
+                hm.addImage(imageFile.getPath());
             }
         listView.setItems(images);
         listView.setPrefWidth(1000);
@@ -113,20 +123,27 @@ public class Controller
      */
     public void indetector(ActionEvent event)
     {
-        //テスト用画像リスト
-        System.out.println("重複処理中です。");
+        hm.setImageColorType(CV_LOAD_IMAGE_COLOR);
+        hm.setAllowableValue(0.99);
+        DetectorResult result = hm.run();
+
         //画像リスト
         List groupPics = new ArrayList();
-        //重複画像グループ１、中身は二つの画像フィアル
-        List<String> group1 = new ArrayList<String>();
-        group1.add("/Users/hakuei/Desktop/pictures/p027_01.jpg");
-        group1.add("/Users/hakuei/Desktop/pictures/p027_02.jpg");
-        //重複画像グループ２、中身は二つの画像フィアル
-        List<String> group2 = new ArrayList<String>();
-        group2.add("/Users/hakuei/Desktop/pictures/p039_01.jpg");
-        group2.add("/Users/hakuei/Desktop/pictures/p039_02.jpg");
-        groupPics.add(group1);
-        groupPics.add(group2);
+        for (Map.Entry<String, Map<String, Double>> entry: result.toMap().entrySet()) {
+
+            List<String> innergroup = new ArrayList<String>();
+            if(entry.getValue().size() ==1) continue;
+            for (Map.Entry<String, Double> inner: entry.getValue().entrySet()) {
+                //テスト用画像リスト
+                System.out.println("重複処理中です。");
+               //重複画像グループ１、中身は二つの画像フィアル
+                innergroup.add(inner.getKey());
+            }
+            groupPics.add(innergroup);
+        }
+
+        //groupPics.add(group1);
+        //groupPics.add(group2);
 
         //タブ定義　重複画像のグループ数と同じ
         List<Tab> groupTabs = new ArrayList<Tab>();
