@@ -4,6 +4,7 @@ package jp.ac.aiit.detector;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -12,8 +13,12 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import jp.ac.aiit.Detector.DetectorResult;
 import jp.ac.aiit.Detector.matcher.HistogramMatcher;
 import org.apache.commons.io.FileUtils;
@@ -123,12 +128,19 @@ public class Controller
      */
     public void indetector(ActionEvent event)
     {
+
+        //detectorライブラリー開始
         hm.setImageColorType(CV_LOAD_IMAGE_COLOR);
         hm.setAllowableValue(0.99);
         DetectorResult result = hm.run();
 
-        //画像リスト
+        //イベント処理開始
+        //---------------新しい-------------------//
+
+        //テスト用画像リスト
+        System.out.println("重複処理中です。");//画像リスト
         List groupPics = new ArrayList();
+
         for (Map.Entry<String, Map<String, Double>> entry: result.toMap().entrySet()) {
 
             List<String> innergroup = new ArrayList<String>();
@@ -136,60 +148,76 @@ public class Controller
             for (Map.Entry<String, Double> inner: entry.getValue().entrySet()) {
                 //テスト用画像リスト
                 System.out.println("重複処理中です。");
-               //重複画像グループ１、中身は二つの画像フィアル
+                //重複画像グループ１、中身は二つの画像フィアル
                 innergroup.add(inner.getKey());
             }
             groupPics.add(innergroup);
         }
 
-        //groupPics.add(group1);
-        //groupPics.add(group2);
 
-        //タブ定義　重複画像のグループ数と同じ
-        List<Tab> groupTabs = new ArrayList<Tab>();
-        //タブに表示画像
-        Image image1;
+        System.out.println("groupPics length is"+ groupPics.size());
 
-        //重複画像のグループ数とグループなかの画像フィアル
-        for (int i = 1; i < groupPics.size()+1; i++) {
+        Stage stageOverlapimage =new Stage();
+        stageOverlapimage.setTitle("重複画像グループ");
+        //Group　View　に borderpane 追加
+        Group rootstageOverlapimage =new Group();
+        //画面の大きさと色設定
+        Scene scene =new Scene(rootstageOverlapimage,800,1000, Color.WHITE);
+        //tabpaneにtab　追加
+        TabPane tabPane =new TabPane();
+        //borderpnaeにtabpane　追加
+        BorderPane borderPane= new BorderPane();
+        //groupPics.size()は重複したいる画像グループの数
+        for(int i=1; i<groupPics.size()+1; i++ )
+        {
+            //tab にhbox 追加
             Tab tab = new Tab();
-            tab.setText("グループ" + i);
-            //タブの中にAnchorPane を貼り付けます
-            AnchorPane pane =new AnchorPane();
-            tab.setContent(pane);
-            //重複画像入れる
-            ObservableList images1= FXCollections.observableArrayList();
-            //画像ファイルの変更
-            List<String> pics = (List)groupPics.get(i-1);
-            //画像表示
-            ListView<String> listView1 = new ListView<String>();
-            for (String imagePath :pics) {
+            tab.setText("グループ"+i);
+            //hboxにtab追加
+            HBox hBox=new HBox();
+            //重複画像リスト
+            ObservableList Overlapimages= FXCollections.observableArrayList();
+
+            //処理画像をリスト　DetectorPics　に保存
+            List<String> DetectorImageList = (List)groupPics.get(i-1);
+
+            //重複画像をリストビューを使って表示する
+            ListView<String> OverlapimageslistView = new ListView<String>();
+            //画像リストをループで　imagePath　に保存
+            for (String imagePath :DetectorImageList) {
+
+                //重複処理画像の流れ
                 File imageFile = new File(imagePath);
-                image1 = new Image(imageFile.toURI().toString());
+                Image DetectorImage =new Image(imageFile.toURI().toString());
+
+                //imageView　に重複画像保存、imageViewの設定
                 ImageView imageView = new ImageView();
                 imageView.setFitHeight(150);
                 imageView.setFitWidth(150);
                 imageView.setPreserveRatio(true);
                 imageView.setSmooth(false);
                 imageView.setCache(true);
-                imageView.setImage(image1);
-                images1.addAll(imageView);
-                listView1.setItems(images1);
-                listView1.setPrefWidth(1000);
-                listView1.setFixedCellSize(100);
+                imageView.setImage(DetectorImage);
+                Overlapimages.addAll(imageView);
+
+                OverlapimageslistView.setItems(Overlapimages);
+                OverlapimageslistView.setPrefWidth(1000);
+                OverlapimageslistView.setFixedCellSize(150);
             }
-            pane.getChildren().add(listView1);
-            groupTabs.add(tab);
+
+            hBox.getChildren().add(OverlapimageslistView);
+            tab.setContent(hBox);
+            tabPane.getTabs().add(tab);
         }
-        //グループ化した画像ファイルのタブを保存する
-        TabPane tabPane = new TabPane();
-        tabPane.getTabs().addAll(groupTabs);
-        //TabPane を表示する
-        final Pane pane= new Pane();
-        pane.getChildren().add(tabPane);
-        Scene scene = new Scene(pane, 1000, 800);
-        Main.stage.setScene(scene);
-        Main.stage.setTitle("Detector");
-        Main.stage.show();
+        //Windowsを表示、中に重複画像ある
+        borderPane.prefHeightProperty().bind(scene.heightProperty());
+        borderPane.prefHeightProperty().bind(scene.widthProperty());
+        borderPane.setCenter(tabPane);
+        rootstageOverlapimage.getChildren().add(borderPane);
+        stageOverlapimage.setScene(scene);
+        stageOverlapimage.show();
+
+
+
     }
 }

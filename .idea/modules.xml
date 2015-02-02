@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DetectorUI.iml" filepath="$PROJECT_DIR$/DetectorUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DetectorUI/DetectorUI.iml" filepath="$PROJECT_DIR$/DetectorUI/DetectorUI.iml" />
       <module fileurl="file://$PROJECT_DIR$/DetectorUI/DetectorUI1.iml" filepath="$PROJECT_DIR$/DetectorUI/DetectorUI1.iml" />
     </modules>
   </component>
