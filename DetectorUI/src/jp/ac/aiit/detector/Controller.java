@@ -50,6 +50,7 @@ public class Controller
      */
     public  void opendirectory(ActionEvent event)
     {
+        //detectorライブラリー
         hm = new HistogramMatcher();
 
         final ListView<String> listView =new ListView<String>();
