@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -8,28 +9,51 @@
 
 <BorderPane prefHeight="900.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jp.ac.aiit.detector.Controller">
    <top>
-      <AnchorPane prefHeight="92.0" prefWidth="1000.0" style="-fx-background-color: #ccccff;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="30.0" prefWidth="1000.0" style="-fx-background-color: #ccccff;" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" prefHeight="30.0" prefWidth="1000.0" style="-fx-background-color: #cccccc;" text="Detector">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button layoutX="667.0" layoutY="35.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="Delete" />
-            <Button layoutX="411.0" layoutY="35.0" mnemonicParsing="false" onAction="#indetector" prefHeight="50.0" prefWidth="200.0" text="重複処理" />
-            <Button fx:id="d_chooser" layoutX="170.0" layoutY="34.0" mnemonicParsing="false" onAction="#opendirectory" prefHeight="50.0" prefWidth="200.0" text="Chooser The Directory" />
          </children>
       </AnchorPane>
    </top>
    <bottom>
-      <AnchorPane prefHeight="50.0" prefWidth="1000.0" style="-fx-background-color: #ccccff;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="110.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="d_path" layoutY="-9.0" prefHeight="30.0" prefWidth="1000.0" style="-fx-background-color: #ccccff;" text="path:" />
-            <Label alignment="CENTER" layoutY="21.0" prefHeight="30.0" prefWidth="1000.0" style="-fx-background-color: #cccccc;" text="AIIT2015©小山裕司PBL" />
+            <HBox alignment="CENTER" prefHeight="75.0" prefWidth="1000.0">
+               <children>
+                  <Button fx:id="d_chooser" mnemonicParsing="false" onAction="#opendirectory" prefHeight="50.0" prefWidth="270.0" text="Chooser The Directory">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Button>
+
+
+                  <Button mnemonicParsing="false" onAction="#indetector" prefHeight="50.0" prefWidth="270.0" text="Detector">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Button>
+                  <Button fx:id="b_exit" alignment="CENTER" mnemonicParsing="false" onAction="#detec_exit" prefHeight="50.0" prefWidth="270.0" text="Exit">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutY="74.0" prefHeight="60.0" prefWidth="1000.0">
+               <children>
+                  <VBox prefHeight="60.0" prefWidth="1000.0">
+                     <children>
+                        <Label fx:id="d_path" prefHeight="30.0" prefWidth="1000.0" style="-fx-background-color: #cccccc;" />
+                        <Label alignment="CENTER" blendMode="DIFFERENCE" depthTest="ENABLE" prefHeight="30.0" prefWidth="1000.0" style="-fx-background-color: #cccccc;" text="AIIT2015©小山裕司PBL" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </bottom>
    <center>
-      <AnchorPane fx:id="imaepane" prefHeight="602.0" prefWidth="1000.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="imaepane" prefHeight="760.0" prefWidth="1000.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
