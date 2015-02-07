@@ -131,7 +131,7 @@ public class Controller
 
         //detectorライブラリー開始
         hm.setImageColorType(CV_LOAD_IMAGE_COLOR);
-        hm.setAllowableValue(0.99);
+        hm.setAllowableValue(0.95);
         DetectorResult result = hm.run();
 
         //イベント処理開始
@@ -185,6 +185,7 @@ public class Controller
             ListView<String> OverlapimageslistView = new ListView<String>();
             //画像リストをループで　imagePath　に保存
             for (String imagePath :DetectorImageList) {
+                //
 
                 //重複処理画像の流れ
                 File imageFile = new File(imagePath);
